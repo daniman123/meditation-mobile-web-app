@@ -2,6 +2,12 @@
   "name": "meditation-mobile-web-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">= 22.14.0",
+    "npm": "11.2.0",
+    "yarn": "please use node",
+    "iojs": "please use node"
+},
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
