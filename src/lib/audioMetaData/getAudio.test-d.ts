@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { getAudioArray } from "./getAudio.js";
+import { getAudioArray, getAudioFilePath } from "./getAudio.js";
 
 test("return ArrIAudioData", () => {
   const audioType = "classicAudio";
@@ -15,4 +15,14 @@ test("return ArrIAudioData", () => {
     { fileName: "15min - Guided.mp3", displayName: "15min", duration: 900 },
     { fileName: "20min - Guided.mp3", displayName: "20min", duration: 1200 },
   ]);
+});
+
+test("return audioFilePath", () => {
+  const audioType = "classicAudio";
+  const audioFilePath = getAudioFilePath(audioType, "1min");
+  // console.log(audioFilePath);
+
+  const actualPath =
+    "C:\\Users\\Danie\\Desktop\\programming\\JavaScript\\meditation-mobile-web-app\\public\\audio\\classic\\1min - Guided.mp3";
+  expect(audioFilePath).toBe(actualPath);
 });
