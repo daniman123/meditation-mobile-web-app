@@ -29,7 +29,7 @@ const eslintConfig = [
     },
   },
   {
-    files: ["**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)"],
+    files: ["../src/**/*..stories.@(ts|tsx|js|jsx|mjs|cjs)"],
     rules: {
       // example of overriding a rule
       "storybook/hierarchy-separator": "error",

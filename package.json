@@ -13,6 +13,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest --typecheck",
     "prettier": "prettier --write .",
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
