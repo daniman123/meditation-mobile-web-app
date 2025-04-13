@@ -1,12 +1,19 @@
 @import "tailwindcss";
 
+:root {
+  --yellow-headspace-pallet-color: #ffcf02;
+  --orange-headspace-pallet-color: #ff7711;
+  --blue-headspace-pallet-color: #0061ed;
+  --green-headspace-pallet-color: #00a655;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: #ff7711;
+  background-color: var(--orange-headspace-pallet-color);
 }
 
 body {
