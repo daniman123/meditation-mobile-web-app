@@ -6,6 +6,7 @@ const preview: Preview = {
   parameters: {
     viewport: {
       viewports: INITIAL_VIEWPORTS,
+      defaultViewport: "iphone13",
     },
     controls: {
       matchers: {
