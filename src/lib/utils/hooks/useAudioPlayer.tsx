@@ -45,12 +45,39 @@ const useAudioPlayer = (trackUrl?: string) => {
 
     audio.addEventListener("loadedmetadata", handleLoadedData);
 
-    return () => {
-      audio.removeEventListener("loadedmetadata", handleLoadedData);
-    };
+    return () => audio.removeEventListener("loadedmetadata", handleLoadedData);
   }, [trackUrl]);
 
-  return audioState;
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!audio) return;
+
+    const handleTimeUpdate = () => {
+      setAudioState((prev) => ({
+        ...prev,
+        currentTime: audio.currentTime,
+      }));
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+
+    return () => audio.removeEventListener("timeupdate", handleTimeUpdate);
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!audio) return;
+
+    audio.muted = audioState.isMuted;
+    audio.volume = audioState.volume;
+  }, [audioState.isMuted, audioState.volume]);
+
+  return {
+    ...audioState,
+    audioElement: audioRef.current as HTMLAudioElement,
+  };
 };
 
 export default useAudioPlayer;
