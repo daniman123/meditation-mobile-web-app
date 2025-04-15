@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface IAudioPlayerState {
   isPlaying: boolean;
@@ -67,15 +67,65 @@ const useAudioPlayer = (trackUrl?: string) => {
 
   useEffect(() => {
     const audio = audioRef.current;
-
     if (!audio) return;
 
     audio.muted = audioState.isMuted;
     audio.volume = audioState.volume;
   }, [audioState.isMuted, audioState.volume]);
 
+  const play = useCallback(() => {
+    audioRef.current
+      ?.play()
+      .then(() => {
+        setAudioState((prev) => ({ ...prev, isPlaying: true }));
+      })
+      .catch((error) => {
+        console.error("Audio playback failed", error);
+      });
+  }, []);
+
+  const pause = useCallback(() => {
+    audioRef.current?.pause();
+    setAudioState((prev) => ({ ...prev, isPlaying: false }));
+  }, []);
+
+  const seek = useCallback((time: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const safeTime = Math.min(Math.max(time, 0), audio.duration || 0);
+    audio.currentTime = safeTime;
+    setAudioState((prev) => ({ ...prev, currentTime: safeTime }));
+  }, []);
+
+  const setVolume = useCallback((volume: number) => {
+    const safeVolume = Math.min(Math.max(volume, 0), 1);
+    setAudioState((prev) => ({
+      ...prev,
+      volume: safeVolume,
+      isMuted: safeVolume === 0 ? true : prev.isMuted,
+    }));
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    setAudioState((prev) => {
+      const newMuted = !prev.isMuted;
+      return {
+        ...prev,
+        isMuted: newMuted,
+        volume: newMuted ? 0 : prev.volume,
+      };
+    });
+  }, []);
+
+  const controls = useMemo(
+    () => ({ play, pause, seek, setVolume, toggleMute }),
+    [play, pause, seek, setVolume, toggleMute]
+  );
+
   return {
     ...audioState,
+    ...controls,
     audioElement: audioRef.current as HTMLAudioElement,
   };
 };
